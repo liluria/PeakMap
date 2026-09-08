@@ -114,6 +114,8 @@ function createLuggageSettings() {
     createAdditionalSettingsEntry("luggage", "Explorer's luggage", "LuggageEpic.png", "LuggageEpic", createLuggage);
     createAdditionalSettingsEntry("luggage", "Ancient luggage", "LuggageAncient.png", "LuggageAncient", createLuggage);
     createAdditionalSettingsEntry("luggage", "Clown luggage", "LuggageClown.png", "LuggageClown", createLuggage);
+    createAdditionalSettingsEntry("luggage", "Mimic luggage", "LuggageTrick.png", "LuggageTrick", createLuggage);
+    createAdditionalSettingsEntry("luggage", "Ancient statue", "scout statue.png", "scout_statue", createLuggage);
 }
 
 // Belltowers
