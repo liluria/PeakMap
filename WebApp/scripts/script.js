@@ -1,7 +1,9 @@
 
 let currentLevel = 0;
 const maxLevel = 4;
+let nextMapUtcHour = 17;
 let levelJson;
+let sceneName;
 
 // Info
 
@@ -11,31 +13,48 @@ function downloadAndCreateInfo() {
             return response.json();
         })
         .then(function(json) {
-            createInfo(json);
-            cacheIdentifier = cacheIdentifier + "&lastUpdate=" + (json.DataTimestamp * 1000);
+            let now = new Date();
+            if(now.getUTCHours() < nextMapUtcHour) {
+                now.setUTCDate(now.getUTCDate() - 1);
+            }
+            let date = now.getUTCDate() + "-" + (now.getUTCMonth() + 1) + "-" + now.getUTCFullYear();
+            console.log("Scene date: " + date);
+            if(!json.DayLevels.hasOwnProperty(date)) {
+                console.log("No data for current scene");
+                sceneName = "Level_1";
+                document.getElementById("map").loading = true;
+                document.getElementById("map").src = "data/Level_1/level_0.jpg";
+                document.getElementById("no-data-yet").style.display = "flex";
+                document.getElementById("settings-nextupdate").innerText = "SOON!";
+                
+                const buttons = new Array(document.getElementsByTagName("button"));
+                for(let i = 0; i < buttons.length; i++) {
+                    buttons[i].disabled = true;
+                }
+                return;
+            }
+            sceneName = json.DayLevels[date];
+            createInfo();
+            console.log("Current scene name: " + sceneName);
+            now.setUTCHours(nextMapUtcHour, 0, 0, 0);
+            document.getElementById("settings-lastupdated").innerText = now.toLocaleDateString() + " " + now.toLocaleTimeString();
+            cacheIdentifier = cacheIdentifier + "&sceneName=" + sceneName + "&sceneDate=" + date;
             loadLevel(0);
         });
 }
 
-function createInfo(json) {
-    let lastUpdateDate = new Date(json.DataTimestamp * 1000);
-    document.getElementById("settings-lastupdated").innerText = lastUpdateDate.toLocaleDateString() + " " + lastUpdateDate.toLocaleTimeString();
+function createInfo() {
     const nextUpdate = document.getElementById("settings-nextupdate");
 
     const now = new Date();
 
     const todayUpdate = new Date(now);
-    todayUpdate.setUTCHours(17, 0, 0, 0);
+    todayUpdate.setUTCHours(nextMapUtcHour, 0, 0, 0);
 
     const expectedUpdate = new Date(todayUpdate);
 
     if(now < todayUpdate) {
         expectedUpdate.setUTCDate(expectedUpdate.getUTCDate() - 1);
-    }
-
-    if(lastUpdateDate < expectedUpdate) {
-        nextUpdate.innerText = "SOON!";
-        return;
     }
 
     let targetDate = new Date(todayUpdate);
@@ -413,11 +432,11 @@ function loadLevel(level) {
             });
         });
     }
-    newImage.src = "./data/level_" + level + ".jpg" + getURLAddition();
+    newImage.src = "./data/" + sceneName + "/level_" + level + ".jpg" + getURLAddition();
 }
 
 function loadLevelJson(level) {
-    return fetch("./data/level_" + level + ".json" + getURLAddition())
+    return fetch("./data/" + sceneName + "/level_" + level + ".json" + getURLAddition())
         .then(function(response) {
             return response.json();
         }) 

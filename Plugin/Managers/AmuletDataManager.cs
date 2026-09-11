@@ -9,7 +9,7 @@ public abstract class AmuletDataManager
 
     public static void CreateAmuletData()
     {
-        LocalizedText.SetLanguage((int) LanguageSetting.Language.English);
+        LocalizedText.SetLanguage((int) LocalizedText.Language.English);
         foreach (var item in Object.FindObjectsByType<FakeItem>(
                      FindObjectsInactive.Include,
                      FindObjectsSortMode.None).Where(n => n.name.ToLower().Contains("amulet")))

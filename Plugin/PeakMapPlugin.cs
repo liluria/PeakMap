@@ -19,6 +19,7 @@ public class PeakMapPlugin : BaseUnityPlugin
         _harmony = new Harmony("PeakMapPlugin");
         _harmony.PatchAll();
         Log.LogInfo("Initialized PeakMapPlugin!");
+        Log.LogError("Attention ! PLUGIN SHOULD BE RUN AS SOON AS PATCH DROPS, TO ENSURE CORRECT DAY-LEVEL SEQUENCE");
     }
 
     private void OnDestroy()

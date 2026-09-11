@@ -10,5 +10,14 @@ public class LevelInfo
     public List<ObjectInfo> Animals = new();
     public List<ObjectInfo> Amulets = new();
     public List<ObjectInfo> Tombs = new();
+
+    public void Clear()
+    {
+        Luggage.Clear();
+        Belltowers.Clear();
+        Animals.Clear();
+        Amulets.Clear();
+        Tombs.Clear();
+    }
     
 }

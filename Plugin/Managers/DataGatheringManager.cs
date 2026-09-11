@@ -1,8 +1,5 @@
-using System;
 using System.IO;
-using Newtonsoft.Json;
-using PeakMap.Objects;
-using UnityEngine;
+using PeakMap.Patches.Automation;
 using Zorro.Core;
 
 namespace PeakMap.Managers;
@@ -11,7 +8,7 @@ public class DataGatheringManager
 {
 
     private static readonly int NUM_LEVELS = 5;
-    private static bool initialized = false;
+    public static bool Available { get; set; }
     
     public static void GatherData()
     {
@@ -20,12 +17,14 @@ public class DataGatheringManager
             return;
         }
         
-        if (initialized)
+        if (!Available)
         {
             return;
         }
         
-        initialized = true;
+        Available = false;
+        
+        Directory.CreateDirectory(Path.Combine(PeakMapPlugin.ModFolder, AirportCheckInKioskPatch.CurrentScene));
         
         for (int i = 0; i < NUM_LEVELS; i++)
         {
@@ -42,14 +41,9 @@ public class DataGatheringManager
             DataManager.CreateData(i, DataManager.LevelInfo, i < 3);
             ScreenshotManager.Flush();
         }
-        
-        File.WriteAllText(Path.Combine(PeakMapPlugin.ModFolder, "info.json"), JsonConvert.SerializeObject(new GatherInfo
-        {
-            DataTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
-        }));
-        
-        Application.Quit();
-        
+
+        ScreenshotManager.ResetValues();
+
     }
     
 }

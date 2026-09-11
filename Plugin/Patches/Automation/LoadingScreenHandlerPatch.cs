@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Linq;
 using HarmonyLib;
+using PeakMap.Managers;
+using PeakMap.Objects;
 using UnityEngine;
 
 namespace PeakMap.Patches.Automation;
@@ -36,6 +38,15 @@ public class LoadingScreenHandlerPatch
                 PeakMapPlugin.Log.LogWarning("Found passport, loading scene...");
                 Object.FindFirstObjectByType<AirportCheckInKiosk>(FindObjectsInactive.Include).StartGame(0);
             }
+        }
+        else
+        {
+            // Next scene
+            _found = false;
+            GameHandler.GetService<ConnectionService>().StateMachine.SwitchState<DisconnectingState>();
+            NetworkConnector.LeaveRoom();
+            DataGatheringManager.Available = true;
+            DataManager.LevelInfo.Clear();
         }
     }
     
