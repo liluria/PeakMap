@@ -94,15 +94,16 @@ function createLuggage(level) {
     if(!document.getElementById("luggage-checkbox").checked) {
         return;
     }
-    if(typeof luggage[level] != "undefined") {
-        for(let i = 0; i < luggage[level].length; i++) {
-            container.appendChild(luggage[level][i]);
+    let identifier = sceneName + "_" + level;
+    if(typeof luggage[identifier] != "undefined") {
+        for(let i = 0; i < luggage[identifier].length; i++) {
+            container.appendChild(luggage[identifier][i]);
         }
         return;
     }
-    luggage[level] = [];
+    luggage[identifier] = [];
     for(let i = 0; i < levelJson.Luggage.length; i++) {
-        luggage[level][i] = createPoint(
+        luggage[identifier][i] = createPoint(
             "luggage",
             levelJson.Luggage[i].PositionOnScreen[0], 
             levelJson.Luggage[i].PositionOnScreen[1], 
@@ -146,15 +147,16 @@ function createBelltowers(level) {
     if(!document.getElementById("belltowers-checkbox").checked) {
         return;
     }
-    if(typeof belltowers[level] != "undefined") {
-        for(let i = 0; i < belltowers[level].length; i++) {
-            container.appendChild(belltowers[level][i]);
+    let identifier = sceneName + "_" + level;
+    if(typeof belltowers[identifier] != "undefined") {
+        for(let i = 0; i < belltowers[identifier].length; i++) {
+            container.appendChild(belltowers[identifier][i]);
         }
         return;
     }
-    belltowers[level] = [];
+    belltowers[identifier] = [];
     for(let i = 0; i < levelJson.Belltowers.length; i++) {
-        belltowers[level][i] = createPoint(
+        belltowers[identifier][i] = createPoint(
             "belltower",
             levelJson.Belltowers[i].PositionOnScreen[0], 
             levelJson.Belltowers[i].PositionOnScreen[1], 
@@ -187,15 +189,16 @@ function createAnimals(level) {
     if(!document.getElementById("animals-checkbox").checked) {
         return;
     }
-    if(typeof animals[level] != "undefined") {
-        for(let i = 0; i < animals[level].length; i++) {
-            container.appendChild(animals[level][i]);
+    let identifier = sceneName + "_" + level;
+    if(typeof animals[identifier] != "undefined") {
+        for(let i = 0; i < animals[identifier].length; i++) {
+            container.appendChild(animals[identifier][i]);
         }
         return;
     }
-    animals[level] = [];
+    animals[identifier] = [];
     for(let i = 0; i < levelJson.Animals.length; i++) {
-        animals[level][i] = createPoint(
+        animals[identifier][i] = createPoint(
             "animals",
             levelJson.Animals[i].PositionOnScreen[0], 
             levelJson.Animals[i].PositionOnScreen[1], 
@@ -228,15 +231,16 @@ function createAmulets(level) {
     if(!document.getElementById("amulets-checkbox").checked) {
         return;
     }
-    if(typeof amulets[level] != "undefined") {
-        for(let i = 0; i < amulets[level].length; i++) {
-            container.appendChild(amulets[level][i]);
+    let identifier = sceneName + "_" + level;
+    if(typeof amulets[identifier] != "undefined") {
+        for(let i = 0; i < amulets[identifier].length; i++) {
+            container.appendChild(amulets[identifier][i]);
         }
         return;
     }
-    amulets[level] = [];
+    amulets[identifier] = [];
     for(let i = 0; i < levelJson.Amulets.length; i++) {
-        amulets[level][i] = createPoint(
+        amulets[identifier][i] = createPoint(
             "amulets",
             levelJson.Amulets[i].PositionOnScreen[0], 
             levelJson.Amulets[i].PositionOnScreen[1], 
@@ -269,15 +273,16 @@ function createTombs(level) {
     if(!document.getElementById("tombs-checkbox").checked) {
         return;
     }
-    if(typeof tombs[level] != "undefined") {
-        for(let i = 0; i < tombs[level].length; i++) {
-            container.appendChild(tombs[level][i]);
+    let identifier = sceneName + "_" + level;
+    if(typeof tombs[identifier] != "undefined") {
+        for(let i = 0; i < tombs[identifier].length; i++) {
+            container.appendChild(tombs[identifier][i]);
         }
         return;
     }
-    tombs[level] = [];
+    tombs[identifier] = [];
     for(let i = 0; i < levelJson.Tombs.length; i++) {
-        tombs[level][i] = createPoint(
+        tombs[identifier][i] = createPoint(
             "tombs",
             levelJson.Tombs[i].PositionOnScreen[0], 
             levelJson.Tombs[i].PositionOnScreen[1], 
