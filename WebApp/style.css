@@ -56,11 +56,11 @@ body {
     background-color: rgba(0, 0, 0, 0.4);
 }
 
-#container:has(#map[loading=true])::after {
+body:has(#map[loading=true])::after {
     content: "";
     position: fixed;
-    top: 10%;
-    left: 90%;
+    top: 9vmin;
+    right: 0;
     width: 12vmin;
     height: 12vmin;
     pointer-events: none;
@@ -235,7 +235,7 @@ body {
 }
 
 .settings-entry label {
-    width: 50%;
+    width: 75%;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
@@ -247,11 +247,12 @@ body {
 }
 
 span.icon {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 2rem;
+    height: 2rem;
     display: inline-block;
     background-size: cover;
     background-position: 50% -50%;
+    background-repeat: no-repeat;
     margin-right: 0.25rem;
 }
 
@@ -273,6 +274,7 @@ span.icon {
 
 .settings-entry label[for="tombs-checkbox"] span {
     background-image: url("./images/Tomb.png");
+    background-size: 200%;
 }
 
 .settings-entry input[type=checkbox] {

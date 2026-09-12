@@ -39,7 +39,7 @@
 <body>
     <div class="standard-container">
         <div class="standard-container" id="container">
-            <img id="map" alt="Map" draggable=false>
+            <img id="map" alt="Map" src="images/blackmap.jpg" draggable=false>
         </div>
         <div id="settings" class="settings-expanded">
             <div id="hide-ui-entry" class="settings-entry">
@@ -106,7 +106,7 @@
             <p id="item-popup-name"></p>
         </div>
         <div id="bottom-container" class="expanded">
-            <button id="bottom-expand" class="mobile-only" onclick="toggleBottomUI(this)">Info ▲</button>
+            <button id="bottom-expand" class="mobile-only" onclick="toggleBottomUI(this)">Info ▼</button>
             <div id="bottom-widgets">
                 <div id="star-reminder" class="ui-panel">
                     <a href="https://github.com/qWojtpl/PeakMap">
@@ -122,6 +122,10 @@
                 Aggro Crab or Landfall Games. All game assets, icons, screenshots, and trademarks are property of Aggro
                 Crab, Landfall Games and/or their licensors.
             </footer>
+        </div>
+        <div id="no-data-yet" style="display:none;">
+            <h1>Current data isn't available yet, sorry ;c</h1>
+            <h1>Check later!</h1>
         </div>
     </div>
 </body>

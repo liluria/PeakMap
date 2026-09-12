@@ -27,10 +27,10 @@ function downloadAndCreateInfo() {
                 document.getElementById("no-data-yet").style.display = "flex";
                 document.getElementById("settings-nextupdate").innerText = "SOON!";
 
-                const buttons = new Array(document.getElementsByTagName("button"));
-                for (let i = 0; i < buttons.length; i++) {
-                    buttons[i].disabled = true;
-                }
+                const buttons = Array.from(document.getElementsByTagName("button"));
+                buttons.forEach(button => {
+                    button.disabled = true;
+                });
                 return;
             }
             sceneName = json.DayLevels[date];
@@ -415,14 +415,11 @@ function loadLevel(level) {
 
     const switchAngleButton = document.getElementById("switch-angle-button");
     //
-    const buttons = new Array(document.getElementsByTagName("button"));
-    let index = buttons.indexOf(switchAngleButton);
-    buttons.splice(index, 1);
-    //
+    const buttons = Array.from(document.getElementsByTagName("button")).filter(btn => btn !== switchAngleButton);
 
-    for (let i = 0; i < buttons.length; i++) {
-        buttons[i].disabled = true;
-    }
+    buttons.forEach(button => {
+        button.disabled = true;
+    });
 
     if (level == 3 || level == 4) {
         switchAngleButton.disabled = true;
