@@ -1,7 +1,9 @@
 
 let currentLevel = 0;
 const maxLevel = 4;
+let nextMapUtcHour = 17;
 let levelJson;
+let sceneName;
 
 // Info
 
@@ -11,31 +13,48 @@ function downloadAndCreateInfo() {
             return response.json();
         })
         .then(function (json) {
-            createInfo(json);
-            cacheIdentifier = cacheIdentifier + "&lastUpdate=" + (json.DataTimestamp * 1000);
+            let now = new Date();
+            if (now.getUTCHours() < nextMapUtcHour) {
+                now.setUTCDate(now.getUTCDate() - 1);
+            }
+            let date = now.getUTCDate() + "-" + (now.getUTCMonth() + 1) + "-" + now.getUTCFullYear();
+            console.log("Scene date: " + date);
+            if (!json.DayLevels.hasOwnProperty(date)) {
+                console.log("No data for current scene");
+                sceneName = "Level_1";
+                document.getElementById("map").loading = true;
+                document.getElementById("map").src = "data/Level_1/level_0.jpg";
+                document.getElementById("no-data-yet").style.display = "flex";
+                document.getElementById("settings-nextupdate").innerText = "SOON!";
+
+                const buttons = new Array(document.getElementsByTagName("button"));
+                for (let i = 0; i < buttons.length; i++) {
+                    buttons[i].disabled = true;
+                }
+                return;
+            }
+            sceneName = json.DayLevels[date];
+            createInfo();
+            console.log("Current scene name: " + sceneName);
+            now.setUTCHours(nextMapUtcHour, 0, 0, 0);
+            document.getElementById("settings-lastupdated").innerText = now.toLocaleDateString() + " " + now.toLocaleTimeString();
+            cacheIdentifier = cacheIdentifier + "&sceneName=" + sceneName + "&sceneDate=" + date;
             loadLevel(0);
         });
 }
 
-function createInfo(json) {
-    let lastUpdateDate = new Date(json.DataTimestamp * 1000);
-    document.getElementById("settings-lastupdated").innerText = lastUpdateDate.toLocaleDateString() + " " + lastUpdateDate.toLocaleTimeString();
+function createInfo() {
     const nextUpdate = document.getElementById("settings-nextupdate");
 
     const now = new Date();
 
     const todayUpdate = new Date(now);
-    todayUpdate.setUTCHours(17, 0, 0, 0);
+    todayUpdate.setUTCHours(nextMapUtcHour, 0, 0, 0);
 
     const expectedUpdate = new Date(todayUpdate);
 
     if (now < todayUpdate) {
         expectedUpdate.setUTCDate(expectedUpdate.getUTCDate() - 1);
-    }
-
-    if (lastUpdateDate < expectedUpdate) {
-        nextUpdate.innerText = "SOON!";
-        return;
     }
 
     let targetDate = new Date(todayUpdate);
@@ -75,15 +94,16 @@ function createLuggage(level) {
     if (!document.getElementById("luggage-checkbox").checked) {
         return;
     }
-    if (typeof luggage[level] != "undefined") {
-        for (let i = 0; i < luggage[level].length; i++) {
-            container.appendChild(luggage[level][i]);
+    let identifier = sceneName + "_" + level;
+    if (typeof luggage[identifier] != "undefined") {
+        for (let i = 0; i < luggage[identifier].length; i++) {
+            container.appendChild(luggage[identifier][i]);
         }
         return;
     }
-    luggage[level] = [];
+    luggage[identifier] = [];
     for (let i = 0; i < levelJson.Luggage.length; i++) {
-        luggage[level][i] = createPoint(
+        luggage[identifier][i] = createPoint(
             "luggage",
             levelJson.Luggage[i].PositionOnScreen[0],
             levelJson.Luggage[i].PositionOnScreen[1],
@@ -114,6 +134,8 @@ function createLuggageSettings() {
     createAdditionalSettingsEntry("luggage", "Explorer's luggage", "LuggageEpic.png", "LuggageEpic", createLuggage);
     createAdditionalSettingsEntry("luggage", "Ancient luggage", "LuggageAncient.png", "LuggageAncient", createLuggage);
     createAdditionalSettingsEntry("luggage", "Clown luggage", "LuggageClown.png", "LuggageClown", createLuggage);
+    createAdditionalSettingsEntry("luggage", "Mimic luggage", "LuggageTrick.png", "LuggageTrick", createLuggage);
+    createAdditionalSettingsEntry("luggage", "Ancient statue", "scout statue.png", "scout_statue", createLuggage);
 }
 
 // Belltowers
@@ -125,15 +147,16 @@ function createBelltowers(level) {
     if (!document.getElementById("belltowers-checkbox").checked) {
         return;
     }
-    if (typeof belltowers[level] != "undefined") {
-        for (let i = 0; i < belltowers[level].length; i++) {
-            container.appendChild(belltowers[level][i]);
+    let identifier = sceneName + "_" + level;
+    if (typeof belltowers[identifier] != "undefined") {
+        for (let i = 0; i < belltowers[identifier].length; i++) {
+            container.appendChild(belltowers[identifier][i]);
         }
         return;
     }
-    belltowers[level] = [];
+    belltowers[identifier] = [];
     for (let i = 0; i < levelJson.Belltowers.length; i++) {
-        belltowers[level][i] = createPoint(
+        belltowers[identifier][i] = createPoint(
             "belltower",
             levelJson.Belltowers[i].PositionOnScreen[0],
             levelJson.Belltowers[i].PositionOnScreen[1],
@@ -166,15 +189,16 @@ function createAnimals(level) {
     if (!document.getElementById("animals-checkbox").checked) {
         return;
     }
-    if (typeof animals[level] != "undefined") {
-        for (let i = 0; i < animals[level].length; i++) {
-            container.appendChild(animals[level][i]);
+    let identifier = sceneName + "_" + level;
+    if (typeof animals[identifier] != "undefined") {
+        for (let i = 0; i < animals[identifier].length; i++) {
+            container.appendChild(animals[identifier][i]);
         }
         return;
     }
-    animals[level] = [];
+    animals[identifier] = [];
     for (let i = 0; i < levelJson.Animals.length; i++) {
-        animals[level][i] = createPoint(
+        animals[identifier][i] = createPoint(
             "animals",
             levelJson.Animals[i].PositionOnScreen[0],
             levelJson.Animals[i].PositionOnScreen[1],
@@ -207,15 +231,16 @@ function createAmulets(level) {
     if (!document.getElementById("amulets-checkbox").checked) {
         return;
     }
-    if (typeof amulets[level] != "undefined") {
-        for (let i = 0; i < amulets[level].length; i++) {
-            container.appendChild(amulets[level][i]);
+    let identifier = sceneName + "_" + level;
+    if (typeof amulets[identifier] != "undefined") {
+        for (let i = 0; i < amulets[identifier].length; i++) {
+            container.appendChild(amulets[identifier][i]);
         }
         return;
     }
-    amulets[level] = [];
+    amulets[identifier] = [];
     for (let i = 0; i < levelJson.Amulets.length; i++) {
-        amulets[level][i] = createPoint(
+        amulets[identifier][i] = createPoint(
             "amulets",
             levelJson.Amulets[i].PositionOnScreen[0],
             levelJson.Amulets[i].PositionOnScreen[1],
@@ -248,15 +273,16 @@ function createTombs(level) {
     if (!document.getElementById("tombs-checkbox").checked) {
         return;
     }
-    if (typeof tombs[level] != "undefined") {
-        for (let i = 0; i < tombs[level].length; i++) {
-            container.appendChild(tombs[level][i]);
+    let identifier = sceneName + "_" + level;
+    if (typeof tombs[identifier] != "undefined") {
+        for (let i = 0; i < tombs[identifier].length; i++) {
+            container.appendChild(tombs[identifier][i]);
         }
         return;
     }
-    tombs[level] = [];
+    tombs[identifier] = [];
     for (let i = 0; i < levelJson.Tombs.length; i++) {
-        tombs[level][i] = createPoint(
+        tombs[identifier][i] = createPoint(
             "tombs",
             levelJson.Tombs[i].PositionOnScreen[0],
             levelJson.Tombs[i].PositionOnScreen[1],
@@ -430,11 +456,11 @@ function loadLevel(level) {
             });
         });
     }
-    newImage.src = "./data/level_" + level + ".jpg" + getURLAddition();
+    newImage.src = "./data/" + sceneName + "/level_" + level + ".jpg" + getURLAddition();
 }
 
 function loadLevelJson(level) {
-    return fetch("./data/level_" + level + ".json" + getURLAddition())
+    return fetch("./data/" + sceneName + "/level_" + level + ".json" + getURLAddition())
         .then(function (response) {
             return response.json();
         })

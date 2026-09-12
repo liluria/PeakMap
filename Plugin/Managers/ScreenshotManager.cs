@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using PeakMap.Patches.Automation;
 using Photon.Pun;
 using UnityEngine;
 using Zorro.Core;
@@ -177,7 +178,7 @@ public static class ScreenshotManager
         screenshot.Apply();
         
         byte[] bytes = screenshot.EncodeToJPG(92);
-        string fullPath = Path.Combine(PeakMapPlugin.ModFolder, "level_" + fileSuffix + ".jpg");
+        string fullPath = Path.Combine(Path.Combine(PeakMapPlugin.ModFolder, AirportCheckInKioskPatch.CurrentScene), "level_" + fileSuffix + ".jpg");
         File.WriteAllBytes(fullPath, bytes);
         
         tempCam.targetTexture = null;
@@ -290,6 +291,34 @@ public static class ScreenshotManager
             PeakMapPlugin.Log.LogWarning("Destroying rock: " + rock.gameObject.name);
             Object.DestroyImmediate(rock.gameObject);
         }
+    }
+
+    public static void ResetValues()
+    {
+        CameraPositions[0] = new Vector3(0f, 100f, -500f);
+        CameraPositions[1] = new Vector3(0f, 100f, 75f);
+        CameraPositions[2] = new Vector3();
+        CameraPositions[3] = new Vector3(0f, 100f, 350f);
+        CameraPositions[4] = new Vector3(0f, 120f, -150f);
+        CameraRotations[0] = new Vector3(0f, 0f, 0f);
+        CameraRotations[1] = new Vector3(30f, 0f, 0f);
+        CameraRotations[2] = new Vector3(23f, 0f, 0f);
+        CameraRotations[3] = new Vector3(89.9f, -89.9f, 0f);
+        CameraRotations[4] = new Vector3(0f, 0f, 0f);
+        CameraFoVs[0] = 45f;
+        CameraFoVs[1] = 90f;
+        CameraFoVs[2] = 90f;
+        CameraFoVs[3] = 90f;
+        CameraFoVs[4] = 90f;
+        for (int i = 0; i < 4; i++)
+        {
+            LevelWidths[i] = 0;
+            LevelHeights[i] = 0;
+        }
+        LevelWidths[4] = 5000;
+        LevelWidths[4] = 5000;
+        _swampCounter = 0;
+        _volcanoCounter = 0;
     }
     
 }

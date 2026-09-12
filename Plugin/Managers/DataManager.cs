@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using PeakMap.Objects;
+using PeakMap.Patches.Automation;
 using UnityEngine;
 
 namespace PeakMap.Managers;
@@ -83,7 +83,7 @@ public abstract class DataManager
         };
 
         File.WriteAllText(
-            Path.Combine(PeakMapPlugin.ModFolder, "level_" + level + filePrefix + ".json"), 
+            Path.Combine(Path.Combine(PeakMapPlugin.ModFolder, AirportCheckInKioskPatch.CurrentScene), "level_" + level + filePrefix + ".json"), 
             JsonConvert.SerializeObject(serializableInfo)
         );
     }

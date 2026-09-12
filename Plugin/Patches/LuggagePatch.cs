@@ -19,7 +19,7 @@ public class LuggagePatch
     {
         if (!_languageSet)
         {
-            LocalizedText.SetLanguage((int) LanguageSetting.Language.English);
+            LocalizedText.SetLanguage((int) LocalizedText.Language.English);
             _languageSet = true;
         }
         DataManager.LevelInfo.Luggage.Add(new ObjectInfo

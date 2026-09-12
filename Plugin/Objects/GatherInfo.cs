@@ -1,8 +1,10 @@
+using System.Collections.Generic;
+
 namespace PeakMap.Objects;
 
 public class GatherInfo
 {
-    
-    public long DataTimestamp { get; set; }
-    
+
+    public Dictionary<string, string> DayLevels = new();
+
 }
