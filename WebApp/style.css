@@ -1,11 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Darumadrop+One&display=swap');
 
+:root {
+    interpolate-size: allow-keywords;
+}
+
+html {
+    overflow: hidden;
+    height: -webkit-fill-available;
+}
+
 body {
     margin: 0;
     padding: 0;
     width: 100vw;
-    height: 100vh;
-    overflow: hidden; 
+    height: 100dvh;
+    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,7 +22,7 @@ body {
     font-family: "Darumadrop One", sans-serif;
     font-weight: 400;
     font-style: normal;
-    font-size: 1.8vmin;
+    font-size: clamp(0.85rem, 1.2vw, 1.1rem);
     user-select: none;
 }
 
@@ -22,6 +31,7 @@ body {
     display: inline-block;
     max-width: 100vw;
     max-height: 100vh;
+    max-height: 100dvh;
 }
 
 #map {
@@ -30,6 +40,7 @@ body {
     height: auto;
     max-width: 100vw;
     max-height: 100vh;
+    max-height: 100dvh;
     object-fit: contain;
     z-index: 1;
 }
@@ -82,6 +93,7 @@ body {
 
 #container {
     cursor: grab;
+    touch-action: none;
 }
 
 .point {
@@ -159,88 +171,88 @@ body {
     border-color: purple;
 }
 
-@keyframes pointHover {
-
-    0% {
-        transform: translate(-50%, -50%) scale(1);
-    }
-
-    20% {
-        transform: translate(-50%, -50%) scale(0.9);
-    }
-
-    50% {
-        transform: translate(-50%, -50%) scale(1.1);
-    }
-
-    100% {
-        transform: translate(-50%, -50%) scale(1);
-    }
-    
-}
-
-@keyframes buttonHover {
-    
-    0% {
-        transform: scale(1);
-    }
-
-    20% {
-        transform: scale(0.9);
-    }
-
-    50% {
-        transform: scale(1.1);
-    }
-
-    100% {
-        transform: scale(1);
-    }
-
-}
-
 .data-frame {
     display: none;
 }
 
-#settings {
-    width: 25vmin;
+#settings,
+#additional-settings {
     height: fit-content;
     z-index: 4;
-    position: absolute;
-    backdrop-filter: blur(15px);
-    border-bottom-right-radius: 2px;
-    border: 1px solid black;
+    position: fixed;
     top: 0;
+    padding: 12px;
+}
+
+#settings {
+    width: 25vmin;
     left: 0;
 }
 
-#settings p {
-    text-align: center;
-    margin-bottom: 1vmin;
+#additional-settings {
+    width: 20vmin;
+    left: calc(25vmin + 24px);
 }
 
-.settings-entry {
+
+.settings-entry,
+#additional-settings-title,
+.ui-panel {
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 8px;
+    backdrop-filter: blur(8px);
+    color: white;
+    align-items: center;
+    /* create new stacking context (fixes the button hover gradient artifact thing) */
+    isolation: isolate;
+}
+
+.settings-entry,
+#additional-settings-title {
     display: flex;
-    gap: 1vmin;
+    gap: 0.3rem;
+    justify-content: space-between;
+    padding: 8px 12px;
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap;
+}
+
+#additional-settings-title {
     justify-content: center;
+}
+
+.ui-panel {
+    padding: 8px 12px;
+    z-index: 4;
+}
+
+#settings p {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 0;
+    flex-direction: column;
+    gap: 0;
 }
 
 .settings-entry label {
     width: 50%;
     display: inline-flex;
     align-items: center;
-    gap: 1vmin;
-    margin-left: 1vmin;
+    gap: 0.5rem;
+    margin-left: 0.25rem;
+}
+
+.settings-entry button {
+    width: 100%;
 }
 
 span.icon {
-    width: 3vmin;
-    height: 3vmin;
+    width: 1.5rem;
+    height: 1.5rem;
     display: inline-block;
     background-size: cover;
     background-position: 50% -50%;
-    margin-right: 0.1vmin;
+    margin-right: 0.25rem;
 }
 
 .settings-entry label[for="luggage-checkbox"] span {
@@ -264,50 +276,52 @@ span.icon {
 }
 
 .settings-entry input[type=checkbox] {
-    width: 1.5vmin;
+    width: 1rem;
+    height: 1rem;
+}
+
+#settings-luggage-entry div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
 .settings-buttons {
     display: flex;
-    margin-left: 12.5%;
-    margin-right: 12.5%;
-    width: 75%;
-    gap: 5%;
-    margin-top: 1vmin;
-    margin-bottom: 1vmin;
+    flex-direction: row;
+    width: 100%;
+    gap: 0.3rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    margin: 0;
+}
+
+.settings-buttons button {
+    width: 50%;
 }
 
 .settings-angle-buttons {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 2vmin;
+    margin: 0;
+    width: 100%;
 }
 
 .settings-angle-buttons button {
-    width: 50%;
+    width: 100%;
+    margin: 0;
 }
 
 #settings p {
     margin-top: 0;
 }
 
-#additional-settings {
-    position: absolute;
-    width: 20vmin;
-    height: fit-content;
-    left: 25vmin;
-    top: -1px;
-    border: 1px solid black;
-    display: none;
-    backdrop-filter: blur(15px);
-    border-bottom-right-radius: 2px;
-}
-
 #additional-settings-title {
     text-transform: uppercase;
     text-align: center;
-    margin: 0;
+    margin-top: 0;
 }
 
 #additional-settings-container {
@@ -317,12 +331,10 @@ span.icon {
 
 #additional-settings-container .settings-entry label {
     width: 70%;
-    font-size: 1.3vmin;
+    font-size: 0.8rem;
 }
 
 .settings-extend {
-    position: absolute;
-    left: 22.5vmin;
     transition: .2s;
 }
 
@@ -336,21 +348,30 @@ span.icon {
 }
 
 button {
-    width: 12vmin;
-    font-size: 1.5vmin;
+    min-width: 10vmin;
     border: none;
-    background-color: #98CA3C;
-    color: white;
+    background-color: #BEFF48;
+    color: black;
     text-transform: uppercase;
     font-family: "Darumadrop One", sans-serif;
     font-weight: 400;
     font-style: normal;
+    line-height: 1;
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    transition: 0.1s all;
+    justify-content: center;
+    will-change: transform;
 }
 
-button:hover {
+button:not([disabled]):hover {
     cursor: pointer;
-    animation-name: buttonHover;
-    animation-duration: 0.8s;
+    scale: 1.05;
+
+}
+
+button:focus:not(:active) {
+    animation: buttonClick 0.8s ease;
 }
 
 button[disabled] {
@@ -365,13 +386,10 @@ button[disabled]:hover {
 #item-popup {
     width: 20vmin;
     height: 15vmin;
-    z-index: 4;
     position: absolute;
-    border-radius: 2px;
-    background-color: rgba(75, 73, 73, 0.7);
     top: 3vmin;
     right: 3vmin;
-    transition: .3s;
+    transition: all 0.3s ease;
     opacity: 0;
     display: flex;
     align-items: center;
@@ -390,46 +408,78 @@ button[disabled]:hover {
     background-position: 50% -50%;
 }
 
-#zoom-reminder {
-    position: absolute;
-    bottom: 1vmin;
-    right: 1vmin;
-    transition: color 1s, opacity 0.3s;
-    animation-name: reminder;
-    animation-duration: 4s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
+#item-popup-name {
+    margin: 0.5vmin 0 0 0;
+}
+
+#bottom-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
     pointer-events: none;
+    z-index: 4;
+}
+
+#bottom-widgets {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 0 1vmin 0.5vmin 1vmin;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.ui-panel {
+    pointer-events: auto;
+}
+
+#zoom-reminder {
+    transition: color 1s, opacity 0.3s;
+    animation: reminder 4s linear infinite;
+}
+
+#zoom-reminder h2 {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 400;
 }
 
 @keyframes reminder {
-
     0% {
-        color: black;
+        color: white;
     }
 
     50% {
-        color: rgb(186, 186, 0);
+        color: #BEFF48;
     }
 
     100% {
-        color: black;
+        color: white;
     }
-
 }
 
-#star-reminder {
-    position: absolute;
-    bottom: 1vmin;
-    left: 1vmin;
+#star-reminder h4 {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 400;
 }
 
 #star-reminder a {
-    transition: .3s;
+    color: white;
+    transition: color 0.3s;
 }
 
 #star-reminder a:hover {
-    color: rgb(186, 186, 0);
+    color: #BEFF48;
+}
+
+a,
+a:visited {
+    color: white;
+    text-decoration: none;
 }
 
 #no-data-yet {
@@ -449,17 +499,232 @@ button[disabled]:hover {
     z-index: 5;
 }
 
-a, a:visited {
-    color: black;
-    text-decoration: none;
-}
-
 footer {
-    background-color: white;
-    position: absolute;
-    bottom: 0;
-    left: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    color: rgba(255, 255, 255, 0.85);
     text-align: center;
     width: 100%;
-    font-size: 1.2vmin;
+    font-size: 0.8rem;
+    padding: 4px 12px;
+    box-sizing: border-box;
+    pointer-events: auto;
+}
+
+#settings-content,
+#additional-settings,
+#zoom-reminder,
+#star-reminder,
+#footer {
+    max-height: fit-content;
+    opacity: 1;
+    overflow: hidden;
+    transition: all 0.2s ease-in-out;
+}
+
+/* hidden state */
+.ui-hidden #settings-content,
+.ui-hidden #additional-settings,
+#additional-settings.ui-hidden,
+.ui-hidden #zoom-reminder,
+.ui-hidden #star-reminder,
+.ui-hidden #footer,
+.ui-hidden #bottom-expand {
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    pointer-events: none;
+}
+
+.ui-hidden #hide-ui-entry {
+    opacity: 0;
+    transition: 0.75s all ease;
+}
+
+.ui-hidden #hide-ui-entry:hover {
+    opacity: 1;
+}
+
+@keyframes pointHover {
+
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    20% {
+        transform: translate(-50%, -50%) scale(0.9);
+    }
+
+    50% {
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+}
+
+@keyframes buttonClick {
+
+    0% {
+        transform: scale(1);
+    }
+
+    20% {
+        transform: scale(0.9);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+
+}
+
+.desktop-only {
+    display: flex;
+}
+
+.mobile-only {
+    display: none;
+}
+
+@media (max-width: 1280px) {
+    #settings {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: none;
+        left: 0;
+        padding: 0;
+        right: 0;
+    }
+
+    #additional-settings {
+        width: calc(100vw - 24px);
+        max-width: 300px;
+        left: 12px;
+        top: auto;
+        bottom: 60px;
+    }
+
+    .settings-entry label {
+        width: 60%;
+    }
+
+    #bottom-widgets {
+        flex-direction: column-reverse;
+        align-items: center;
+        gap: 6px;
+    }
+
+    #star-reminder,
+    #zoom-reminder {
+        text-align: center;
+        width: 90%;
+    }
+
+    #item-popup {
+        width: 140px;
+        height: auto;
+        padding: 8px;
+        top: 12px;
+        right: 12px;
+    }
+
+    #item-popup-image {
+        width: 48px;
+        height: 48px;
+    }
+
+    #bottom-expand,
+    #settings-toggle-btn {
+        align-self: center;
+        pointer-events: auto;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    #bottom-expand {
+        margin-bottom: 6px;
+    }
+
+    #hide-ui-entry {
+        background: none;
+        backdrop-filter: none;
+        padding: 0;
+        margin: 0;
+        border-radius: 0;
+    }
+
+    #settings-toggle-btn {
+        margin: 8px 0 4px;
+        width: auto;
+    }
+
+    #hide-ui-entry {
+        justify-content: center;
+    }
+
+    #bottom-container:not(.expanded) #bottom-widgets,
+    #bottom-container:not(.expanded) #footer {
+        max-height: 0;
+        opacity: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+        pointer-events: none;
+        overflow: hidden;
+    }
+
+    #settings-content {
+        width: 90%;
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        pointer-events: none;
+        padding-top: 0;
+        padding-bottom: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+        transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    }
+
+    #settings.settings-expanded #settings-content {
+        max-height: 600px;
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .settings-extend::after {
+        /* hiding this in mobile as we dont have enough space to fit it anywhere  */
+        display: none;
+        content: none;
+    }
+
+    .mobile-only {
+        display: flex;
+    }
+
+    .desktop-only {
+        display: none;
+    }
+}
+
+@media (max-width: 890px) {
+    .settings-buttons {
+        flex-direction: column;
+    }
+
+    .settings-buttons button {
+        width: 100%;
+    }
 }

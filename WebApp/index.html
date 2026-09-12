@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <!-- Meta -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Check the daily map with item locations for the PEAK game. Interactive map updated daily!">
-    <meta name="keywords" content="PEAK, PEAK Game, PEAK Map, PEAK Daily Map, PEAK map today, PEAK item locations, PEAK interactive map, PEAK guide, PEAK items, PEAK game daily reset, PEAK map update, PEAK tomb location, PEAK locations, PEAK current map, PEAK biomes today, PEAK biomes, PEAK maps, current PEAK map, PEAK tomb today, PEAK new map, PEAK daily, PEAK map viewer, PEAK biome tracker">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="description"
+        content="Check the daily map with item locations for the PEAK game. Interactive map updated daily!">
+    <meta name="keywords"
+        content="PEAK, PEAK Game, PEAK Map, PEAK Daily Map, PEAK map today, PEAK item locations, PEAK interactive map, PEAK guide, PEAK items, PEAK game daily reset, PEAK map update, PEAK tomb location, PEAK locations, PEAK current map, PEAK biomes today, PEAK biomes, PEAK maps, current PEAK map, PEAK tomb today, PEAK new map, PEAK daily, PEAK map viewer, PEAK biome tracker">
     <meta property="og:site_name" content="PEAK Daily Map">
     <meta property="og:title" content="PEAK Game - Daily Map & Item Locations">
-    <meta property="og:description" content="Check the daily map with item locations for the PEAK game. Interactive map updated daily!">
+    <meta property="og:description"
+        content="Check the daily map with item locations for the PEAK game. Interactive map updated daily!">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://qwojtpl.github.io/PeakMap/WebApp">
     <meta name="robots" content="index, follow">
@@ -23,83 +28,102 @@
     </script>
     <title>PEAK Game - Daily Map & Item Locations</title>
     <!-- Scripts & CSS -->
-    <link rel="stylesheet" href="style.css?v=11">
+    <link rel="stylesheet" href="style.css?v=12">
     <link rel="icon" type="image/x-icon" href="./images/BingBong.png">
-    <script src="scripts/zoom.js?v=4"></script>
+    <script src="scripts/zoom.js?v=5"></script>
     <script src="scripts/nocache.js?v=2"></script>
-    <script src="scripts/additionalSettings.js"></script>
-    <script src="scripts/script.js?v=10"></script>
+    <script src="scripts/additionalSettings.js?v=2"></script>
+    <script src="scripts/script.js?v=11"></script>
 </head>
+
 <body>
     <div class="standard-container">
         <div class="standard-container" id="container">
             <img id="map" alt="Map" draggable=false>
         </div>
-        <div id="settings">
-            <p>Last updated:<br> <b id="settings-lastupdated">...</b></p>
-            <p>Next update: <b id="settings-nextupdate">...</b></p>
-            <div class="settings-entry">
-                <label for="luggage-checkbox">
-                    <span class="icon"></span>Luggage
-                </label>
-                <input type="checkbox" id="luggage-checkbox" onchange="switchLuggage(this)" checked>
-                <div class="settings-extend" for="luggage"></div>
+        <div id="settings" class="settings-expanded">
+            <div id="hide-ui-entry" class="settings-entry">
+                <button class="desktop-only" onclick="toggleUI(this)">Hide UI</button>
+                <button class="mobile-only" id="settings-toggle-btn" onclick="toggleSettings(this)">Settings ▼</button>
             </div>
-            <div class="settings-entry">
-                <label for="belltowers-checkbox">
-                    <span class="icon"></span>Belltowers
-                </label>
-                <input type="checkbox" id="belltowers-checkbox" onchange="switchBelltowers(this)" checked>
-            </div>
-            <div class="settings-entry">
-                <label for="animals-checkbox">
-                    <span class="icon"></span>Animals
-                </label>
-                <input type="checkbox" id="animals-checkbox" onchange="switchAnimals(this)" checked>
-            </div>
-            <div class="settings-entry">
-                <label for="amulets-checkbox">
-                    <span class="icon"></span>Amulets
-                </label>
-                <input type="checkbox" id="amulets-checkbox" onchange="switchAmulets(this)" checked>
-            </div>
-            <div class="settings-entry">
-                <label for="tombs-checkbox">
-                    <span class="icon"></span>Tomb
-                </label>
-                <input type="checkbox" id="tombs-checkbox" onchange="switchTombs(this)" checked>
-            </div>
-            <div class="settings-buttons">
-                <button onclick="previousLevel()">Previous biome</button>
-                <button onclick="nextLevel()">Next biome</button>
-            </div>
-            <div class="settings-angle-buttons">
-                <button id="switch-angle-button" onclick="switchAngle()">Change angle (beta)</button>
+            <div id="settings-content">
+                <div class="settings-entry">
+                    <p>Last updated:<br> <b id="settings-lastupdated">...</b></p>
+                    <p>Next update: <b id="settings-nextupdate">...</b></p>
+                </div>
+                <div id="settings-luggage-entry" class="settings-entry">
+                    <label for="luggage-checkbox">
+                        <span class="icon"></span>Luggage
+                    </label>
+                    <div>
+                        <div class="settings-extend" for="luggage"></div>
+                        <input type="checkbox" id="luggage-checkbox" onchange="switchLuggage(this)" checked>
+                    </div>
+                </div>
+                <div class="settings-entry">
+                    <label for="belltowers-checkbox">
+                        <span class="icon"></span>Belltowers
+                    </label>
+                    <input type="checkbox" id="belltowers-checkbox" onchange="switchBelltowers(this)" checked>
+                </div>
+                <div class="settings-entry">
+                    <label for="animals-checkbox">
+                        <span class="icon"></span>Animals
+                    </label>
+                    <input type="checkbox" id="animals-checkbox" onchange="switchAnimals(this)" checked>
+                </div>
+                <div class="settings-entry">
+                    <label for="amulets-checkbox">
+                        <span class="icon"></span>Amulets
+                    </label>
+                    <input type="checkbox" id="amulets-checkbox" onchange="switchAmulets(this)" checked>
+                </div>
+                <div class="settings-entry">
+                    <label for="tombs-checkbox">
+                        <span class="icon"></span>Tomb
+                    </label>
+                    <input type="checkbox" id="tombs-checkbox" onchange="switchTombs(this)" checked>
+                </div>
+                <div class="settings-entry">
+                    <div class="settings-buttons">
+                        <button onclick="previousLevel()">Previous biome</button>
+                        <button onclick="nextLevel()">Next biome</button>
+                    </div>
+                    <div class="settings-angle-buttons">
+                        <button id="switch-angle-button" onclick="switchAngle()">Change angle (beta)</button>
+                    </div>
+                </div>
             </div>
         </div>
-        <div id="additional-settings">
+        <div id="additional-settings" class="ui-hidden">
             <p id="additional-settings-title"></p>
             <div id="additional-settings-container">
 
             </div>
         </div>
-        <div id="item-popup">
+        <div id="item-popup" class="ui-panel">
             <span id="item-popup-image"></span>
             <p id="item-popup-name"></p>
         </div>
-        <div id="zoom-reminder">
-            <h2>Use scroll and mouse to zoom in</h2>
+        <div id="bottom-container" class="expanded">
+            <button id="bottom-expand" class="mobile-only" onclick="toggleBottomUI(this)">Info ▲</button>
+            <div id="bottom-widgets">
+                <div id="star-reminder" class="ui-panel">
+                    <a href="https://github.com/qWojtpl/PeakMap">
+                        <h4>Appreciate my work? Grant me a star on GitHub!</h4>
+                    </a>
+                </div>
+                <div id="zoom-reminder" class="ui-panel">
+                    <h2>Use scroll and mouse or pinch and drag to zoom in</h2>
+                </div>
+            </div>
+            <footer id="footer">
+                This is an unofficial, open-source fan project and is not affiliated with, endorsed, or sponsored by
+                Aggro Crab or Landfall Games. All game assets, icons, screenshots, and trademarks are property of Aggro
+                Crab, Landfall Games and/or their licensors.
+            </footer>
         </div>
-        <div id="star-reminder">
-            <a href="https://github.com/qWojtpl/PeakMap"><h4>Appreciate my work? Grant me a star on GitHub!</h4></a>
-        </div>
-        <div id="no-data-yet" style="display:none;">
-            <h1>Current data isn't available yet, sorry ;c</h1>
-            <h1>Check later!</h1>
-        </div>
-        <footer>
-            This is an unofficial, open-source fan project and is not affiliated with, endorsed, or sponsored by Aggro Crab or Landfall Games. All game assets, icons, screenshots, and trademarks are property of Aggro Crab, Landfall Games and/or their licensors.
-        </footer>
     </div>
 </body>
+
 </html>
