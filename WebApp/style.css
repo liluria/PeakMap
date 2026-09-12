@@ -479,6 +479,7 @@ button[disabled]:hover {
 a,
 a:visited {
     color: white;
+    text-decoration: none;
 }
 
 #no-data-yet {
