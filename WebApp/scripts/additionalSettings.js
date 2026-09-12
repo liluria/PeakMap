@@ -6,23 +6,25 @@ let lastAdditional = null;
 function createAdditionalSettings() {
     const extend = document.getElementsByClassName("settings-extend");
     const additionalSettings = document.getElementById("additional-settings");
-    additionalSettings.style.display = "none";
 
-    for(let i = 0; i < extend.length; i++) {
+    for (let i = 0; i < extend.length; i++) {
         extend[i].addEventListener("click", () => {
-            if(additionalSettings.style.display == "block") {
-                additionalSettings.style.display = "none";
+            const settingsFor = extend[i].getAttribute("for");
+
+            if (lastAdditional === settingsFor) {
+                additionalSettings.classList.toggle("ui-hidden");
                 return;
             }
-            additionalSettings.style.display = "block";
-            setupAdditionalSettings(extend[i].getAttribute("for"));
+
+            setupAdditionalSettings(settingsFor);
+            additionalSettings.classList.remove("ui-hidden");
         });
     }
 }
 
 function setupAdditionalSettings(settingsFor) {
-    if(lastAdditional != null) {
-        if(lastAdditional == settingsFor) {
+    if (lastAdditional != null) {
+        if (lastAdditional == settingsFor) {
             return;
         }
     }
@@ -31,7 +33,7 @@ function setupAdditionalSettings(settingsFor) {
     checkboxes = [];
     settingsContainer.innerHTML = "";
     document.getElementById("additional-settings-title").innerText = settingsFor;
-    if(settingsFor == "luggage") {
+    if (settingsFor == "luggage") {
         createLuggageSettings();
     }
 }
@@ -40,14 +42,14 @@ function createAdditionalSettingsEntry(group, name, image, special, createPoints
     const settingsContainer = document.getElementById("additional-settings-container");
     let div = document.createElement("div");
     div.classList.add("settings-entry");
-    
+
     let checkboxId = "additional-" + special + "-checkbox";
 
     let label = document.createElement("label");
     label.setAttribute("for", checkboxId);
     label.innerHTML = `<span class="icon" style="background-image:url('./images/${image}')"></span>${name}`;
     div.appendChild(label);
-    
+
     let checkbox = document.createElement("input");
     checkbox.setAttribute("type", "checkbox");
     checkbox.setAttribute("id", checkboxId);
@@ -70,8 +72,8 @@ function createAdditionalSettingsEntry(group, name, image, special, createPoints
 }
 
 function refreshAdditionalFilter() {
-    for(let i = 0; i < checkboxes.length; i++) {
-        if(!checkboxes[i].checked) {
+    for (let i = 0; i < checkboxes.length; i++) {
+        if (!checkboxes[i].checked) {
             removePointsWithSpecial(checkboxes[i].getAttribute("group"), checkboxes[i].getAttribute("special"));
         }
     }

@@ -7,10 +7,10 @@ let levelJson;
 
 function downloadAndCreateInfo() {
     fetch("./data/info.json" + getURLAddition() + "&now=" + new Date().getTime())
-        .then(function(response) {
+        .then(function (response) {
             return response.json();
         })
-        .then(function(json) {
+        .then(function (json) {
             createInfo(json);
             cacheIdentifier = cacheIdentifier + "&lastUpdate=" + (json.DataTimestamp * 1000);
             loadLevel(0);
@@ -29,18 +29,18 @@ function createInfo(json) {
 
     const expectedUpdate = new Date(todayUpdate);
 
-    if(now < todayUpdate) {
+    if (now < todayUpdate) {
         expectedUpdate.setUTCDate(expectedUpdate.getUTCDate() - 1);
     }
 
-    if(lastUpdateDate < expectedUpdate) {
+    if (lastUpdateDate < expectedUpdate) {
         nextUpdate.innerText = "SOON!";
         return;
     }
 
     let targetDate = new Date(todayUpdate);
 
-    if(now >= targetDate) {
+    if (now >= targetDate) {
         targetDate.setUTCDate(targetDate.getUTCDate() + 1);
     }
 
@@ -48,7 +48,7 @@ function createInfo(json) {
         const currentTime = new Date();
         let diff = targetDate - currentTime;
 
-        if(diff <= 0) {
+        if (diff <= 0) {
             nextUpdate.innerText = "Refresh the page";
             return;
         }
@@ -61,7 +61,7 @@ function createInfo(json) {
 
         nextUpdate.innerText = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
     }, 1000);
-    
+
 }
 
 downloadAndCreateInfo();
@@ -72,21 +72,21 @@ let luggage = [];
 
 function createLuggage(level) {
     const container = document.getElementById("container");
-    if(!document.getElementById("luggage-checkbox").checked) {
+    if (!document.getElementById("luggage-checkbox").checked) {
         return;
     }
-    if(typeof luggage[level] != "undefined") {
-        for(let i = 0; i < luggage[level].length; i++) {
+    if (typeof luggage[level] != "undefined") {
+        for (let i = 0; i < luggage[level].length; i++) {
             container.appendChild(luggage[level][i]);
         }
         return;
     }
     luggage[level] = [];
-    for(let i = 0; i < levelJson.Luggage.length; i++) {
+    for (let i = 0; i < levelJson.Luggage.length; i++) {
         luggage[level][i] = createPoint(
             "luggage",
-            levelJson.Luggage[i].PositionOnScreen[0], 
-            levelJson.Luggage[i].PositionOnScreen[1], 
+            levelJson.Luggage[i].PositionOnScreen[0],
+            levelJson.Luggage[i].PositionOnScreen[1],
             levelJson.Luggage[i].DisplayName,
             levelJson.Luggage[i].Name.replaceAll(" ", "_"),
             `${levelJson.Luggage[i].Name}.png`
@@ -99,7 +99,7 @@ function removeLuggage() {
 }
 
 function switchLuggage(checkbox) {
-    if(checkbox.checked) {
+    if (checkbox.checked) {
         createLuggage(currentLevel);
     } else {
         removeLuggage();
@@ -122,21 +122,21 @@ let belltowers = [];
 
 function createBelltowers(level) {
     const container = document.getElementById("container");
-    if(!document.getElementById("belltowers-checkbox").checked) {
+    if (!document.getElementById("belltowers-checkbox").checked) {
         return;
     }
-    if(typeof belltowers[level] != "undefined") {
-        for(let i = 0; i < belltowers[level].length; i++) {
+    if (typeof belltowers[level] != "undefined") {
+        for (let i = 0; i < belltowers[level].length; i++) {
             container.appendChild(belltowers[level][i]);
         }
         return;
     }
     belltowers[level] = [];
-    for(let i = 0; i < levelJson.Belltowers.length; i++) {
+    for (let i = 0; i < levelJson.Belltowers.length; i++) {
         belltowers[level][i] = createPoint(
             "belltower",
-            levelJson.Belltowers[i].PositionOnScreen[0], 
-            levelJson.Belltowers[i].PositionOnScreen[1], 
+            levelJson.Belltowers[i].PositionOnScreen[0],
+            levelJson.Belltowers[i].PositionOnScreen[1],
             levelJson.Belltowers[i].DisplayName,
             levelJson.Belltowers[i].Name.replaceAll(" ", "_"),
             `${levelJson.Belltowers[i].Name}.png`
@@ -149,7 +149,7 @@ function removeBelltowers() {
 }
 
 function switchBelltowers(checkbox) {
-    if(checkbox.checked) {
+    if (checkbox.checked) {
         createBelltowers(currentLevel);
     } else {
         removeBelltowers();
@@ -163,21 +163,21 @@ let animals = [];
 
 function createAnimals(level) {
     const container = document.getElementById("container");
-    if(!document.getElementById("animals-checkbox").checked) {
+    if (!document.getElementById("animals-checkbox").checked) {
         return;
     }
-    if(typeof animals[level] != "undefined") {
-        for(let i = 0; i < animals[level].length; i++) {
+    if (typeof animals[level] != "undefined") {
+        for (let i = 0; i < animals[level].length; i++) {
             container.appendChild(animals[level][i]);
         }
         return;
     }
     animals[level] = [];
-    for(let i = 0; i < levelJson.Animals.length; i++) {
+    for (let i = 0; i < levelJson.Animals.length; i++) {
         animals[level][i] = createPoint(
             "animals",
-            levelJson.Animals[i].PositionOnScreen[0], 
-            levelJson.Animals[i].PositionOnScreen[1], 
+            levelJson.Animals[i].PositionOnScreen[0],
+            levelJson.Animals[i].PositionOnScreen[1],
             levelJson.Animals[i].DisplayName,
             levelJson.Animals[i].Name.replaceAll(" ", "_"),
             `${levelJson.Animals[i].Name}.png`
@@ -190,7 +190,7 @@ function removeAnimals() {
 }
 
 function switchAnimals(checkbox) {
-    if(checkbox.checked) {
+    if (checkbox.checked) {
         createAnimals(currentLevel);
     } else {
         removeAnimals();
@@ -204,21 +204,21 @@ let amulets = [];
 
 function createAmulets(level) {
     const container = document.getElementById("container");
-    if(!document.getElementById("amulets-checkbox").checked) {
+    if (!document.getElementById("amulets-checkbox").checked) {
         return;
     }
-    if(typeof amulets[level] != "undefined") {
-        for(let i = 0; i < amulets[level].length; i++) {
+    if (typeof amulets[level] != "undefined") {
+        for (let i = 0; i < amulets[level].length; i++) {
             container.appendChild(amulets[level][i]);
         }
         return;
     }
     amulets[level] = [];
-    for(let i = 0; i < levelJson.Amulets.length; i++) {
+    for (let i = 0; i < levelJson.Amulets.length; i++) {
         amulets[level][i] = createPoint(
             "amulets",
-            levelJson.Amulets[i].PositionOnScreen[0], 
-            levelJson.Amulets[i].PositionOnScreen[1], 
+            levelJson.Amulets[i].PositionOnScreen[0],
+            levelJson.Amulets[i].PositionOnScreen[1],
             levelJson.Amulets[i].DisplayName,
             levelJson.Amulets[i].Name.replaceAll(" ", "_"),
             `${levelJson.Amulets[i].Name}.png`
@@ -231,7 +231,7 @@ function removeAmulets() {
 }
 
 function switchAmulets(checkbox) {
-    if(checkbox.checked) {
+    if (checkbox.checked) {
         createAmulets(currentLevel);
     } else {
         removeAmulets();
@@ -245,21 +245,21 @@ let tombs = [];
 
 function createTombs(level) {
     const container = document.getElementById("container");
-    if(!document.getElementById("tombs-checkbox").checked) {
+    if (!document.getElementById("tombs-checkbox").checked) {
         return;
     }
-    if(typeof tombs[level] != "undefined") {
-        for(let i = 0; i < tombs[level].length; i++) {
+    if (typeof tombs[level] != "undefined") {
+        for (let i = 0; i < tombs[level].length; i++) {
             container.appendChild(tombs[level][i]);
         }
         return;
     }
     tombs[level] = [];
-    for(let i = 0; i < levelJson.Tombs.length; i++) {
+    for (let i = 0; i < levelJson.Tombs.length; i++) {
         tombs[level][i] = createPoint(
             "tombs",
-            levelJson.Tombs[i].PositionOnScreen[0], 
-            levelJson.Tombs[i].PositionOnScreen[1], 
+            levelJson.Tombs[i].PositionOnScreen[0],
+            levelJson.Tombs[i].PositionOnScreen[1],
             levelJson.Tombs[i].DisplayName,
             levelJson.Tombs[i].Name.replaceAll(" ", "_"),
             `${levelJson.Tombs[i].Name}.png`
@@ -272,7 +272,7 @@ function removeTombs() {
 }
 
 function switchTombs(checkbox) {
-    if(checkbox.checked) {
+    if (checkbox.checked) {
         createTombs(currentLevel);
     } else {
         removeTombs();
@@ -314,7 +314,7 @@ function removePointsWithSpecial(group, special) {
     const container = document.getElementById("container");
     const elements = Array.from(document.getElementsByClassName(group));
     elements.forEach(element => {
-        if(Array.from(element.classList).includes(special)) {
+        if (Array.from(element.classList).includes(special)) {
             container.removeChild(element);
         }
     });
@@ -330,7 +330,7 @@ function removeAll(level) {
 
 function previousLevel() {
     let level = currentLevel;
-    if((currentLevel + "").includes("_")) {
+    if ((currentLevel + "").includes("_")) {
         level = parseInt(currentLevel.split("_")[0]);
     }
     loadLevel(level - 1);
@@ -338,7 +338,7 @@ function previousLevel() {
 
 function switchAngle() {
     let level;
-    if((currentLevel + "").includes("_")) {
+    if ((currentLevel + "").includes("_")) {
         level = parseInt(currentLevel.split("_")[0]);
     } else {
         level = currentLevel + "_side";
@@ -348,24 +348,45 @@ function switchAngle() {
 
 function nextLevel() {
     let level = currentLevel;
-    if((currentLevel + "").includes("_")) {
+    if ((currentLevel + "").includes("_")) {
         level = parseInt(currentLevel.split("_")[0]);
     }
     loadLevel(level + 1);
 }
 
+function toggleUI(button) {
+    const isHidden = document.body.classList.toggle("ui-hidden");
+    button.innerText = isHidden ? "Show UI" : "Hide UI";
+}
+
+function toggleSettings(button) {
+    const settings = document.getElementById("settings");
+    if (!settings) return;
+    const isExpanded = settings.classList.toggle("settings-expanded");
+    button.innerText = isExpanded ? "Settings ▲" : "Settings ▼";
+}
+
+function toggleBottomUI(button) {
+    const bottomContainer = document.getElementById("bottom-container");
+    if (!bottomContainer) return;
+    const isExpanded = bottomContainer.classList.toggle("expanded");
+    if (button) {
+        button.innerText = isExpanded ? "Info ▼" : "Info ▲";
+    }
+}
+
 function loadLevel(level) {
-    if(level < 0) {
+    if (level < 0) {
         loadLevel(maxLevel);
         return;
     }
-    if(level > maxLevel) {
+    if (level > maxLevel) {
         loadLevel(0);
         return;
     }
-    
+
     console.log("Loading level: " + level);
-    
+
     const switchAngleButton = document.getElementById("switch-angle-button");
     //
     const buttons = new Array(document.getElementsByTagName("button"));
@@ -373,29 +394,27 @@ function loadLevel(level) {
     buttons.splice(index, 1);
     //
 
-    for(let i = 0; i < buttons.length; i++) {
+    for (let i = 0; i < buttons.length; i++) {
         buttons[i].disabled = true;
     }
 
-    if(level == 3 || level == 4) {
+    if (level == 3 || level == 4) {
         switchAngleButton.disabled = true;
     } else {
         switchAngleButton.disabled = false;
     }
 
     zoom = 1;
-    zoomTop = 0;
-    zoomLeft = 0;
     updateZoom();
 
     removeAll(currentLevel);
 
     currentLevel = level;
-    
+
     let map = document.getElementById("map");
     map.loading = true;
     let newImage = new Image();
-    newImage.onload = function() {
+    newImage.onload = function () {
         requestAnimationFrame(() => {
             map.src = this.src;
             Promise.all([
@@ -404,7 +423,7 @@ function loadLevel(level) {
                 refreshAdditionalFilter();
                 requestAnimationFrame(() => {
                     map.loading = false;
-                    for(let i = 0; i < buttons.length; i++) {
+                    for (let i = 0; i < buttons.length; i++) {
                         buttons[i].disabled = false;
                     }
                 });
@@ -416,15 +435,16 @@ function loadLevel(level) {
 
 function loadLevelJson(level) {
     return fetch("./data/level_" + level + ".json" + getURLAddition())
-        .then(function(response) {
+        .then(function (response) {
             return response.json();
-        }) 
-        .then(function(json) {
+        })
+        .then(function (json) {
             levelJson = json;
             createLuggage(level);
             createBelltowers(level);
             createAnimals(level);
             createAmulets(level);
             createTombs(level);
+            updateZoom();
         });
 }
