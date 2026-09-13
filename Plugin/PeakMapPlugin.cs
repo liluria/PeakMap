@@ -97,8 +97,8 @@ public class PeakMapPlugin : BaseUnityPlugin
     {
         Log.LogWarning("Leaving Photon room and returning to main menu");
         SkipSpawnWait = true;
-        GameHandler.GetService<ConnectionService>().StateMachine.SwitchState<DisconnectingState>();
         NetworkConnector.LeaveRoom();
+        GameHandler.GetService<ConnectionService>().StateMachine.SwitchState<DisconnectingState>();
     }
 
     private void OnDestroy()
