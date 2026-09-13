@@ -1,71 +1,28 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
+using System.Collections;
 using HarmonyLib;
-using Newtonsoft.Json;
-using PeakMap.Objects;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+using Zorro.Core;
 
 namespace PeakMap.Patches.Automation;
 
-[HarmonyPatch(typeof(AirportCheckInKiosk), nameof(AirportCheckInKiosk.BeginIslandLoadRPC))]
-public class AirportCheckInKioskPatch
+[HarmonyPatch(typeof(MainMenu))]
+public class MainMenuPatch
 {
-
-    private static List<string> AllScenes { get; } = new();
-    private static string TodayScene { get; set; }
-    private static int _sceneCounter = 0;
-    public static string CurrentScene { get; private set; }
-
-    public static void Prefix(ref string sceneName)
+    [HarmonyPatch("Start")]
+    [HarmonyPostfix]
+    public static void StartPostfix()
     {
-        if (TodayScene == null)
+        bool batchRemaining = PeakMapPlugin.BatchActive && PeakMapPlugin.LevelQueue.Count > 0;
+        if (!PeakMapPlugin.SkipMainMenu.Value && !batchRemaining)
         {
-            for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
-            {
-                string name = SceneUtility.GetScenePathByBuildIndex(i);
-                if(name.Contains("/Generated/"))
-                {
-                    AllScenes.Add(name.Split("/Generated/")[1].Replace(".unity", ""));
-                }
-            }
-            TodayScene = sceneName;
-        }
-
-        if (_sceneCounter == AllScenes.Count)
-        {
-            Dictionary<string, string> dayLevels = new();
-            
-            int start = AllScenes.IndexOf(TodayScene);
-            int counter = start;
-            DateTime date = DateTime.UtcNow;
-            while (true)
-            {
-                dayLevels.Add(date.Day + "-" + date.Month + "-" + date.Year, AllScenes[counter]);
-                date = date.AddDays(1);
-                counter++;
-                if (counter == AllScenes.Count)
-                {
-                    counter = 0;
-                }
-
-                if (counter == start)
-                {
-                    break;
-                }
-            }
-            File.WriteAllText(Path.Combine(PeakMapPlugin.ModFolder, "info.json"), JsonConvert.SerializeObject(new GatherInfo
-            {
-                DayLevels = dayLevels
-            }));
-            Application.Quit();
             return;
         }
-        
-        sceneName = AllScenes[_sceneCounter];
-        CurrentScene = sceneName;
-        _sceneCounter++;
+        LoadingScreenHandlerPatch.Found = false;
+        RetrievableResourceSingleton<LoadingScreenHandler>.Instance.Load(LoadingScreen.LoadingScreenType.Basic, null, StartOfflineModeRoutine());
     }
-    
+
+    private static IEnumerator StartOfflineModeRoutine()
+    {
+        yield return MainMenu.DisconnectForOfflineMode();
+        yield return RetrievableResourceSingleton<LoadingScreenHandler>.Instance.LoadSceneProcess("Airport", networked: false, yieldForCharacterSpawn: true);
+    }
 }

@@ -136,20 +136,24 @@ public static class ScreenshotManager
 
     private static void PrepareMap()
     {
+        if (_currentMapObject == null) return;
+
         PhotonNetwork.IsMessageQueueRunning = false;
         _currentMapObject.SetActive(true);
-        
-        foreach(EnablingSubstep substep in _currentEnablingSubsteps)
+
+        foreach (EnablingSubstep substep in _currentEnablingSubsteps)
         {
+            if (substep == null) continue;
             substep.gameObject.SetActive(true);
         }
-        _currentSegment.segmentCampfire?.SetActive(true);
-        _currentSegment.wallNext?.SetActive(false);
-        _currentSegment.wallPrevious?.SetActive(false);
+        if (_currentSegment.segmentCampfire != null) { _currentSegment.segmentCampfire.SetActive(true); }
+        if (_currentSegment.wallNext != null) { _currentSegment.wallNext.SetActive(false); }
+        if (_currentSegment.wallPrevious != null) { _currentSegment.wallPrevious.SetActive(false); }
         if (_currentSegment.biome == Biome.BiomeType.Swamp)
         {
             _swampCounter++;
-        } else if (_currentSegment.biome == Biome.BiomeType.Volcano)
+        }
+        else if (_currentSegment.biome == Biome.BiomeType.Volcano)
         {
             _volcanoCounter++;
         }

@@ -7,8 +7,19 @@ let sceneName;
 
 // Info
 
+function getDataBase() {
+    const params = new URLSearchParams(window.location.search);
+    const seed = params.get("seed");
+    const version = params.get("version");
+
+    if (!version) {
+        return "./data/";
+    }
+    return seed ? "./data/" + version + "/" + seed + "/" : "./data/" + version + "/";
+}
+
 function downloadAndCreateInfo() {
-    fetch("./data/info.json" + getURLAddition() + "&now=" + new Date().getTime())
+    fetch(getDataBase() + "info.json" + getURLAddition() + "&now=" + new Date().getTime())
         .then(function (response) {
             return response.json();
         })
@@ -453,11 +464,11 @@ function loadLevel(level) {
             });
         });
     }
-    newImage.src = "./data/" + sceneName + "/level_" + level + ".jpg" + getURLAddition();
+    newImage.src = getDataBase() + sceneName + "/level_" + level + ".jpg" + getURLAddition();
 }
 
 function loadLevelJson(level) {
-    return fetch("./data/" + sceneName + "/level_" + level + ".json" + getURLAddition())
+    return fetch(getDataBase() + sceneName + "/level_" + level + ".json" + getURLAddition())
         .then(function (response) {
             return response.json();
         })
