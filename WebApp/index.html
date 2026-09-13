@@ -47,10 +47,17 @@
                 <button class="mobile-only" id="settings-toggle-btn" onclick="toggleSettings(this)">Settings ▼</button>
             </div>
             <div id="settings-content">
-                <div class="settings-entry">
-                    <p>Last updated:<br> <b id="settings-lastupdated">...</b></p>
-                    <p>Next update: <b id="settings-nextupdate">...</b></p>
-                </div>
+				<div class="settings-entry">
+					<p>
+						Last updated:<br>
+							<b id="settings-lastupdated">...</b>
+					</p>
+					<div id="next-update-row">
+						<p>
+							Next update: <b id="settings-nextupdate">...</b>
+						</p>
+					</div>
+				</div>
                 <div id="settings-luggage-entry" class="settings-entry">
                     <label for="luggage-checkbox">
                         <span class="icon"></span>Luggage

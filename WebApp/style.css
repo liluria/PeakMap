@@ -730,3 +730,8 @@ footer {
         width: 100%;
     }
 }
+
+#next-update-row,
+#star-reminder {
+    display: none;
+}
