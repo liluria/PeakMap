@@ -51,11 +51,15 @@ public static class ScreenshotManager
     private static GameObject _currentMapObject;
     private static MapHandler.MapSegment _currentSegment;
     private static EnablingSubstep[] _currentEnablingSubsteps;
-    
+
     public static void SetupLevelDimensions(int level)
     {
         MapHandler.MapSegment segment = Singleton<MapHandler>.Instance?.segments?[level];
-        Vector3? campfire = segment?.segmentCampfire?.transform.position;
+        if (segment == null || segment.segmentCampfire == null)
+        {
+            return;
+        }
+        Vector3? campfire = segment.segmentCampfire.transform.position;
 
         if (campfire == null)
         {
@@ -182,7 +186,7 @@ public static class ScreenshotManager
         screenshot.Apply();
         
         byte[] bytes = screenshot.EncodeToJPG(92);
-        string fullPath = Path.Combine(Path.Combine(PeakMapPlugin.ModFolder, AirportCheckInKioskPatch.CurrentScene), "level_" + fileSuffix + ".jpg");
+        string fullPath = Path.Combine(PeakMapPlugin.GetOutputFolder(), "level_" + fileSuffix + ".jpg");
         File.WriteAllBytes(fullPath, bytes);
         
         tempCam.targetTexture = null;

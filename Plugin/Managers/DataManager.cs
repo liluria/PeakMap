@@ -83,7 +83,7 @@ public abstract class DataManager
         };
 
         File.WriteAllText(
-            Path.Combine(Path.Combine(PeakMapPlugin.ModFolder, AirportCheckInKioskPatch.CurrentScene), "level_" + level + filePrefix + ".json"), 
+            Path.Combine(PeakMapPlugin.GetOutputFolder(), "level_" + level + filePrefix + ".json"),
             JsonConvert.SerializeObject(serializableInfo)
         );
     }

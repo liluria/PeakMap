@@ -40,7 +40,7 @@ public class PeakMapPlugin : BaseUnityPlugin
         ModFolder = Path.GetDirectoryName(Info.Location.Replace("PeakMap.dll", "output\\"));
         Log = Logger;
         TargetLevel = Config.Bind("General", "TargetLevel", "",
-            "Force a specific level/seed scene (e.g. \"Level_7\"), a range (e.g. \"Level_0-Level_4\") to batch-generate several, or leave empty for normal daily behavior.");
+            "Force specific level/seed scenes, comma-separated (e.g. \"Level_0, Level_3-Level_6, Level_8\"). Supports single levels and ranges mixed together or leave empty to not override the seed.");
         SkipMainMenu = Config.Bind("General", "SkipMainMenu", false,
             "If true, auto-skips the title screen and lands you at the Airport lobby on launch. Set to false to stay at the title screen so you can set TargetLevel first.");
         SkipAirport = Config.Bind("General", "SkipAirport", true,
@@ -62,18 +62,25 @@ public class PeakMapPlugin : BaseUnityPlugin
     {
         Queue<string> queue = new Queue<string>();
         if (string.IsNullOrWhiteSpace(input)) return queue;
-        Match match = Regex.Match(input.Trim(), @"^Level_(\d+)\s*-\s*Level_(\d+)$", RegexOptions.IgnoreCase);
-        if (match.Success)
+
+        foreach (string part in input.Split(','))
         {
-            int start = int.Parse(match.Groups[1].Value);
-            int end = int.Parse(match.Groups[2].Value);
-            int step = start <= end ? 1 : -1;
-            for (int i = start; step > 0 ? i <= end : i >= end; i += step)
-                queue.Enqueue("Level_" + i);
-        }
-        else
-        {
-            queue.Enqueue(input.Trim());
+            string trimmed = part.Trim();
+            if (trimmed.Length == 0) continue;
+
+            Match match = Regex.Match(trimmed, @"^Level_(\d+)\s*-\s*Level_(\d+)$", RegexOptions.IgnoreCase);
+            if (match.Success)
+            {
+                int start = int.Parse(match.Groups[1].Value);
+                int end = int.Parse(match.Groups[2].Value);
+                int step = start <= end ? 1 : -1;
+                for (int i = start; step > 0 ? i <= end : i >= end; i += step)
+                    queue.Enqueue("Level_" + i);
+            }
+            else
+            {
+                queue.Enqueue(trimmed);
+            }
         }
         return queue;
     }
