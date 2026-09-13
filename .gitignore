@@ -1,6 +1,7 @@
 Plugin/.idea/*
 Plugin/obj/*
 Plugin/bin/*
+.vs/
 *.sln
 *.user
 *.pem
